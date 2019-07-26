@@ -1,0 +1,21 @@
+{% extends 'ecole/declaration_base.html' %}
+{% block content %}
+
+<div id="textbox">
+  <p class="alignleft">
+      _________________<br/>
+      _________________<br/>
+      _________________<br/>
+      _________________<br/>
+      _________________<br/>
+  </p>
+  <p class="alignright">
+        {{ ecole.nom }}<br/>
+        {{ ecole.nom_directeur }}<br/>
+        {{ ecole.adresse }}<br/>
+        {{ ecole.numero_telephone }}<br/>
+        {{ ecole.email }}<br/>
+    </p>
+</div>
+
+{% endblock %}

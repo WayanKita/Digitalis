@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Declaration</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/declaration.css' %}">
+</head>
+<body>
+    <div class="page">
+        <div class="sub_page">
+
+
+            <h1><i>Digitalis.</i></h1>
+            <h2 align="center"><br><b>D E C L A R A T I O N S</br>D I G I T A L I S</b></h2>
+
+            <p><i>Afin de poursuivre au remboursement de vos frais lors d'incident veuillez remplir ce
+            formulaire et le communiquer avec les parents d'élèves. Nous facilitons les procedures liés au remboursement en permettant d'avoir une base de données efficaces</i></p>
+
+            {% block content %}
+            {% endblock %}
+            <div style="clear: both;"></div>
+
+            <h2 align="center"><b>M O T I F S   D E   L A   D E C L A R A T I O N S</b></h2>
+            <div class="text_decription_area"></div>
+            <h2 align="center"><b>I N F O S   A D D I T I O N E L S</b></h2>
+            <div></div>
+        </div>
+    </div>
+</body>
+</html>
