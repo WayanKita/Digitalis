@@ -47,6 +47,7 @@ sdist/
 var/
 venv/
 .idea/
+digitalis/settings.py
 *.egg-info/
 .installed.cfg
 *.egg
