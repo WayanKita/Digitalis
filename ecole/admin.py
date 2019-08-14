@@ -14,46 +14,51 @@ from .resources import EleveResource
 from ecole.models import *
 
 
+def assurer(modeladmin, request, queryset):
+    pass
+
+
 class EcoleAdmin(admin.ModelAdmin):
-    def has_add_permission(self, request):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    # def __unicode__(self):  # __str__ on Python 3
-    #     return "Ecole"
-    #
-    # class Meta:
-    #     verbose_name_plural = "Ecole"
+    pass
 
 
 class EleveAdmin(ImportExportModelAdmin):
-    # def export(request):
-    #     person_resource = EleveResource()
-    #     dataset = person_resource.export()
-    #     response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
-    #     response['Content-Disposition'] = 'attachment; filename="persons.xls"'
-    #     return response
-
+    actions = [assurer, ]
     list_display = (
         'prenom',
         'nom',
         'classe',
-        'date_de_naissance')
-    # exclude = ('assure',)
+        'date_de_naissance',
+        'assure')
+
+    readonly_fields = ["assure"]
+    list_filter = ['assure']
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj.assure:
+            return ["prenom", "nom", "date_de_naissance", "date_ajout"]
+        else:
+            return []
+
+    def my_admin_action(modeladmin, request, queryset):
+        pass
+
+        # do something with the queryset
+
+    my_admin_action.short_description = 'Assure les eleves selectiones'
 
 
 class DeclarationAdmin(admin.ModelAdmin):
     def get_urls(self):
+
         urls = super().get_urls()
         custom_urls = [
             url(
-                r'^(?P<pk>.+)/declaration/$', views.formulaire,
+                r'^(?P<pk>.+)$', views.formulaire,
                 name='voire')
             ,
             url(
-                r'^(?P<pk>.+)/declaration/$', views.formulaire,
+                r'^(?P<pk>.+)$', views.formulaire,
                 name='telecharger'),
         ]
         return custom_urls + urls
@@ -76,11 +81,11 @@ class DeclarationAdmin(admin.ModelAdmin):
     actions_button.allow_tags = True
 
 
-
+assurer.short_description = 'Assurer ces eleves'
 admin.site.site_header = "RC Scolaire"
 admin.site.register(Eleve, EleveAdmin)
-admin.site.register(Administrateur)
+admin.site.register(Assistant)
 admin.site.register(Declaration, DeclarationAdmin)
-admin.site.register(Ecole, EcoleAdmin)
+admin.site.register(Etablissement, EcoleAdmin)
 
 
