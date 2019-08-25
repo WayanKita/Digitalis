@@ -31,7 +31,9 @@ class EleveAdmin(ImportExportModelAdmin):
         courtier = Etablissement.objects.filter(chef_etablissement=request.user.chefetablissement).get().courtier
         demande_souscription = DemandeSouscription.objects.create(chef_etablissement=request.user.chefetablissement,
                                                                   courtier=courtier)
+        demande_souscription.save()
         for eleve in queryset:
+            print(eleve.nom)
             Souscription.objects.create(produit_assurance=produit_rc_scolaire,
                                         status='2',
                                         courtier=courtier,
@@ -39,7 +41,9 @@ class EleveAdmin(ImportExportModelAdmin):
                                         chef_etablissement=request.user.chefetablissement,
                                         date_creation=datetime.datetime.now())
             demande_souscription.eleves.add(eleve)
+            demande_souscription.save()
         demande_souscription.eleves_count = demande_souscription.eleves.all().count()
+        demande_souscription.save()
         return render(request=request,
                       template_name="ecole/payment.html",
                       context={"object_list": queryset,
@@ -268,12 +272,29 @@ class DemandeSouscriptionAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def get_list_display(self, request):
-        if request.user.groups.filter(name='Courtier').exists():
+        if request.user.groups.filter(name='Chef Etablissement').exists():
             return ['courtier', 'eleves_count', 'payement_valider', 'actions_button']
         if request.user.groups.filter(name='Courtier').exists():
             return ['chef_etablissement', 'eleves_count', 'payement_valider', 'actions_button']
         if request.user.is_superuser:
             return ['chef_etablissement', 'courtier', 'eleves_count', 'payement_valider', 'actions_button']
+
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.groups.filter(name='Courtier').exists():
+            return ['chef_etablissement', 'eleves', 'eleves_count', 'payement_valider', 'actions_button']
+        if request.user.groups.filter(name='Chef Etablissement').exists():
+            return ['courtier', 'eleves', 'eleves_count', 'payement_valider', 'actions_button']
+        if request.user.is_superuser:
+            return ['chef_etablissement', 'courtier', 'eleves_count', 'payement_valider', 'actions_button']
+
+    def get_exclude(self, request, obj=None):
+        if request.user.groups.filter(name='Courtier').exists():
+            return ['courtier']
+        if request.user.groups.filter(name='Chef Etablissement').exists():
+            return ['chef_etablissement']
+        if request.user.is_superuser:
+            return []
+
 
     actions_button.short_description = 'Actions'
     actions_button.allow_tags = True

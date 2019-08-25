@@ -37,7 +37,7 @@ def valider_payment(request, pk):
     for eleve in requete.eleves.all():
         eleve.assure = True
         eleve.save()
-    return redirect('admin/ecole/demandesouscription')
+    return redirect('/admin/ecole/demandesouscription')
 
 
 def render_pdf(request, pk):
@@ -58,7 +58,7 @@ def accepter_demande(request, pk):
     demande.status = '3'
     demande.accepter = True
     demande.save()
-    return redirect('admin/ecole/declaration')
+    return redirect('/admin/ecole/declaration')
 
 
 def refuser_demande(request, pk):
@@ -66,13 +66,13 @@ def refuser_demande(request, pk):
     demande.status = '3'
     demande.accepter = False
     demande.save()
-    return redirect('admin/ecole/declaration')
+    return redirect('/admin/ecole/declaration')
 
 
 def traite(request, pk):
     demande = Declaration.objects.filter(pk=pk).get()
     demande.status = '2'
     demande.save()
-    return redirect('admin/ecole/declaration')
+    return redirect('/admin/ecole/declaration')
 
 
