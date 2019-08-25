@@ -1,3 +1,4 @@
+from datetime import timedelta, datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -37,6 +38,9 @@ def valider_payment(request, pk):
     for eleve in requete.eleves.all():
         eleve.assure = True
         eleve.save()
+        souscription = Souscription.objects.filter(eleve=eleve).get()
+        souscription.date_expiration = datetime.now() + timedelta(days=365)
+        souscription.save()
     return redirect('/admin/ecole/demandesouscription')
 
 
