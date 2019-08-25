@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(template_name='client/login.html')),
     url(r'^logout/$', auth_views.LogoutView.as_view()),
-    url(r'^preferences/$', views.offres_view, name='offres'),
+    url('', views.offres_view, name='offres'),
 ]
 
 
