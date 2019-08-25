@@ -21,35 +21,35 @@ class Client(models.Model):
 
 class Declaration(models.Model):
     BLESSURES = (
-        ('Leger', 'Leger'),
-        ('Grave', 'Grave'),
-        ('Deces', 'Deces'),
+        ('0', 'Leger'),
+        ('1', 'Grave'),
+        ('2', 'Deces'),
     )
     STATUS = (
-        ('Reçu', 'Reçu'),
-        ('En cours de traitement', 'En cours de traitement'),
-        ('Résolue', 'Résolue'),
+        ('0', 'Envoyer'),
+        ('1', 'Reçu'),
+        ('2', 'En cours de traitement'),
+        ('3', 'Résolue'),
     )
 
     titre = models.CharField(max_length=100)
+    produit_assurance = models.ForeignKey(ProduitAssurance, on_delete=models.CASCADE )
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    assurance = models.ForeignKey(Assureur, related_name='assurance_client', on_delete=models.CASCADE)
-    addresse = models.CharField(max_length=200)
-    numero_telephone = models.CharField(max_length=100)
-    numero_mobile = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    raison = models.TextField(max_length=1000)
-    information_supplementaire = models.TextField(max_length=500)
-    date = models.DateField()
+    date = models.DateField(blank=True, null=True)
     date_incident = models.DateField()
     lieu_incident = models.TextField()
     circonstence_incident = models.TextField()
     nature_blessure = models.CharField(max_length=5, choices=BLESSURES)
+    information_supplementaire = models.TextField(max_length=500, blank=True, null=True)
+    accepter = models.BooleanField(blank=True, null=True)
     status = models.CharField(max_length=5, choices=STATUS)
-    courtier = models.ForeignKey(Courtier, related_name='courtier_client', on_delete=models.CASCADE)
+    courtier = models.ForeignKey(Courtier, blank=True, null=True, related_name='courtier_client', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.titre
+
+    def nature_blessure_verbose(self):
+        return dict(Declaration.BLESSURES)[self.nature_blessure]
 
 
 class Souscription(models.Model):
