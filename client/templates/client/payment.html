@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Declaration</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+{#    <link rel="stylesheet" type="text/css" href="{% static 'css/declaration.css' %}">#}
+</head>
+<body>
+<div id="header">
+    <div id="branding">
+        <h1 id="site-name"><a href="/admin/">Portail Client</a></h1>
+    </div>
+    <div id="user-tools">
+        Bienvenue,
+        <strong>{{ user.username }}</strong>.
+        <a href="/admin/password_change/">Modifier le mot de passe</a> /
+        <a href="/admin/logout/">Déconnexion</a>
+    </div>
+</div>
+<div class="breadcrumbs">
+<a href="/admin/">Accueil</a>
+› <a href="/admin/client/">Client</a>
+› <a href="/admin/client/offre">Offres</a>
+› Payement
+</div>
+<h1 align="center">Vous vous appretez a achter le produit suivant:</h1>
+<table style="width:60%" align="center">
+    <tr>
+        <th>Produit</th>
+        <th>Courtier</th>
+        <th>Prix</th>
+    </tr>
+    <tr>
+        <th>{{ offre.souscription|title }}</th>
+        <th>{{ offre.courtier|title }}</th>
+        <th>{{ offre.prix }}</th>
+    </tr>
+</table>
+<p align="center"><i>Veuillez verifier les informations fournisent avant de confirmer</i></p>
+
+<div style="width: 80%;
+margin: auto;
+background-color: #417690;
+height: 130px; color: white;
+padding-top: 10px;
+padding-right: 20px; padding-left: 20px;
+padding-bottom: 20px;">
+    <div class="float-left">
+        <p style="color: #f5dd5d;">Payment au guichet</p>
+        <ul>
+            <li>32 Boulevard de l'Indépendance, Libreville, Gabon</li>
+            <li>11 Carrefour Leon Mba, Port Gentil, Gabon</li>
+            <li>2 Avenue du Maréchal, Franceville, Gabon</li>
+        </ul>
+    </div>
+    <div class="float-right">
+        <p style="color: #f5dd5d;">Payment AirTel Money</p>
+        <p style="font-size: 13px">Versez le montant de {{ offre.prix }} CFA au +241 06 22 35 75</p>
+    </div>
+</div>
+
+
+</body>
+</html>

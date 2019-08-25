@@ -1,5 +1,5 @@
 {% extends 'ecole/declaration_base.html' %}
-{% block content %}
+{% block coordonees %}
 
 <div id="textbox">
   <p class="alignleft">
@@ -10,12 +10,20 @@
       _________________<br/>
   </p>
   <p class="alignright">
-        {{ ecole.nom }}<br/>
-        {{ ecole.nom_directeur }}<br/>
-        {{ ecole.adresse }}<br/>
-        {{ ecole.numero_telephone }}<br/>
-        {{ ecole.email }}<br/>
+        {{ etablissement.nom }}<br/>
+        {{ etablissement.chef_etablissement.nom|title }} {{ etablissement.chef_etablissement.prenom|title }}<br/>
+        {{ etablissement.adresse }}<br/>
+        {{ etablissement.numero_telephone }}<br/>
+        {{ etablissement.email }}<br/>
     </p>
 </div>
+
+{% endblock %}
+
+{% block information %}
+<h2 align="center"><b>M O T I F S &nbsp D E &nbsp L A &nbsp D E C L A R A T I O N S</b></h2>
+        <div class="text_decription_area"></div>
+        <h2 align="center"><b>I N F O S &nbsp A D D I T I O N E L S</b></h2>
+        <div class="text_additional_area"></div>
 
 {% endblock %}

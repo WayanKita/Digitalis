@@ -23,29 +23,27 @@
 </div>
 <div class="breadcrumbs">
 <a href="/admin/">Accueil</a>
-› <a href="/admin/ecole/">Ecole</a>
-› <a href="/admin/ecole/declarations">Declarations</a>
-› {{ declaration.titre }}
+> <a href="/admin/ecole/">Ecole</a>
+> <a href="/admin/ecole/declaration">Declarations</a>
+> {{ declaration.titre }}
 </div>
 <div class="page">
     <div class="sub_page">
 
 
-        <h1><i>Digitalis.</i></h1>
+        <h1><i>OnDigitalis.</i></h1>
         <h2 align="center"><br><b>D E C L A R A T I O N S</br>D I G I T A L I S</b></h2>
 
         <p><i>Afin de poursuivre au remboursement de vos frais lors d'incident veuillez remplir ce
             formulaire et le communiquer avec les parents d'élèves. Nous facilitons les procedures liés au remboursement
             en permettant d'avoir une base de données efficaces</i></p>
 
-        {% block content %}
+        {% block coordonees %}
         {% endblock %}
         <div style="clear: both;"></div>
+        {% block information %}
+        {% endblock %}
 
-        <h2 align="center"><b>M O T I F S &nbsp D E &nbsp L A &nbsp D E C L A R A T I O N S</b></h2>
-        <div class="text_decription_area"></div>
-        <h2 align="center"><b>I N F O S &nbsp A D D I T I O N E L S</b></h2>
-        <div class="text_additional_area"></div>
     </div>
 </div>
 </body>

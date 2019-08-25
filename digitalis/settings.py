@@ -31,7 +31,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -41,6 +40,7 @@ INSTALLED_APPS = [
     'assurance',
     'client',
     'import_export',
+    'django.contrib.admin',
 ]
 
 MIDDLEWARE = [
@@ -114,7 +114,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -128,3 +128,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Config commands
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+DATE_FORMAT = "d-m-Y"
+DATE_INPUT_FORMATS = ['%d-%m-%Y']

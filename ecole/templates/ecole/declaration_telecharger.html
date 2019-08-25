@@ -1,0 +1,78 @@
+{#{% load static %}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Declaration</title>
+{#    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">#}
+{#    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">#}
+{#    <link rel="stylesheet" type="text/css" href="{% static 'css/declaration.css' %}">#}
+    <style>
+
+
+        .alignleft {
+            text-align: left;
+            display:inline-block
+        }
+        .alignright {
+            text-align: right;
+            display:inline-block;
+        }
+
+        .text_decription_area{
+            position: relative;
+            background-color: lightgray;
+            width: 100%;
+            height: 400px;
+            /*margin: auto;*/
+            border-radius: 20px;
+        }
+
+        .text_additional_area{
+            position: relative;
+            background-color: lightgray;
+            width: 100%;
+            height: 100px;
+            /*margin: auto;*/
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="sub_page">
+
+
+        <h1><i>Digitalis.</i></h1>
+        <h2 align="center"><br><b>D E C L A R A T I O N S</br>D I G I T A L I S</b></h2>
+
+        <p><i>Afin de poursuivre au remboursement de vos frais lors d'incident veuillez remplir ce
+            formulaire et le communiquer avec les parents d'élèves. Nous facilitons les procedures liés au remboursement
+            en permettant d'avoir une base de données efficaces</i></p>
+
+        <div id="textbox">
+            <p class="alignleft">
+                {{ declaration.eleve.prenom|title }} {{ declaration.eleve.nom|title }}<br/>
+                {{ declaration.eleve.classe|title }}<br/>
+                {{ declaration.eleve.date_de_naissance|title }}<br/>
+                {{ declaration.eleve.numero_telephone }}<br/>
+                {{ declaration.eleve.email }}<br/>
+            </p>
+            <p class="alignright">
+                {{ ecole.nom|title }}<br/>
+                {{ ecole.nom_directeur|title }}<br/>
+                {{ ecole.adresse|title }}<br/>
+                {{ ecole.numero_telephone }}<br/>
+                {{ ecole.email }}<br/>
+            </p>
+        </div>
+        <div style="clear: both;"></div>
+
+        <h2 align="center"><b>M O T I F S &nbsp D E &nbsp L A &nbsp D E C L A R A T I O N S</b></h2>
+        <div class="text_decription_area"></div>
+        <h2 align="center"><b>I N F O S &nbsp A D D I T I O N E L S</b></h2>
+        <div class="text_additional_area"></div>
+    </div>
+</div>
+</body>
+</html>

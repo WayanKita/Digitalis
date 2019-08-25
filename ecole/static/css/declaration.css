@@ -47,22 +47,41 @@ body {
 }
 .alignright {
 	float: right;
+	text-align: right;
+}
+
+li {
+	list-style-type: none !important;
+	font-size: 15px;
+}
+
+.payment {
+    width: 50%;
+	display:block;
+	background-color: #79aec8;
 }
 
 .text_decription_area{
     position: relative;
-    background-color: lightgray;
+	display: inline-block;
+    background-color: #79aec8;
     width: 100%;
-    height: 400px;
-	/*margin: auto;*/
 	border-radius: 20px;
+	color: white;
 }
 
 .text_additional_area{
 	position: relative;
-    background-color: lightgray;
+	display: inline-block;
+    background-color: #79aec8;
     width: 100%;
-    height: 100px;
-	/*margin: auto;*/
+	min-height: 50px;
 	border-radius: 20px;
+	color: white;
+}
+
+.text_additional_area p{
+	vertical-align: middle;
+	font-size: 15px;
+	margin-left: 40px;
 }

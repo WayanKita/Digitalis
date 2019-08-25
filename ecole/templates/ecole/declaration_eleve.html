@@ -1,21 +1,39 @@
 {% extends 'ecole/declaration_base.html' %}
-{% block content %}
+{% block coordonees %}
 
+<h2 class="alignleft"><br><b>S O U S C R I P T E U R</b></h2>
+<h2 class="alignright"><br><b>A S S U R É</b></h2>
+    <div style="clear: both;"></div>
 <div id="textbox">
     <p class="alignleft">
-        {{ declaration.eleve.prenom|title }} {{ declaration.eleve.nom|title }}<br/>
+        {{ declaration.eleve.nom|title }} {{ declaration.eleve.prenom|title }}<br/>
         {{ declaration.eleve.classe|title }}<br/>
         {{ declaration.eleve.date_de_naissance|title }}<br/>
-        {{ declaration.eleve.numero_telephone }}<br/>
-        {{ declaration.eleve.email }}<br/>
+        Produit assurance: RC Scolaire<br/>
     </p>
-    <p class="alignright">
-        {{ ecole.nom|title }}<br/>
-        {{ ecole.nom_directeur|title }}<br/>
-        {{ ecole.adresse|title }}<br/>
-        {{ ecole.numero_telephone }}<br/>
-        {{ ecole.email }}<br/>
+
+    <p class="alignright" >
+        {{ etablissement.nom|title }}<br/>
+        {{ etablissement.chef_etablissement.nom|title }} {{ etablissement.chef_etablissement.prenom|title }}<br/>
+        {{ etablissement.adresse|title }}<br/>
+        {{ etablissement.numero_telephone }}<br/>
+        {{ etablissement.email }}<br/>
     </p>
 </div>
+
+{% endblock %}
+
+{% block information %}
+    <h2 align="center"><b>I N C I D E N T</b></h2>
+    <div class="text_decription_area">
+        <ul>
+            <li>Date de l'incident: <b>{{ declaration.date_incident }}</b></li>
+            <li>Lieu de l'incident: <b>{{ declaration.lieu_incident }}</b></li>
+            <li>Nature des blessures: <b>{{ declaration.nature_blessure_verbose }}</b></li>
+        </ul>
+    </div>
+
+    <h2 align="center"><b>I N F O S &nbsp A D D I T I O N E L S</b></h2>
+    <div class="text_additional_area"><p>{{ declaration.information_supplementaire }}</p></div>
 
 {% endblock %}
