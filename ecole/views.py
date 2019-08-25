@@ -37,7 +37,7 @@ def valider_payment(request, pk):
     for eleve in requete.eleves.all():
         eleve.assure = True
         eleve.save()
-    return reverse('admin/ecole/demandesouscription')
+    return redirect('admin/ecole/demandesouscription')
 
 
 def render_pdf(request, pk):
