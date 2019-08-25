@@ -328,7 +328,7 @@ class SouscriptionAdmin(admin.ModelAdmin):
         else:
             return ['produit_assurance', 'chef_etablissement', 'courtier', 'date_expiration']
 
-admin.site.site_header = "RC Scolaire"
+admin.site.site_header = "OnDigitalise"
 admin.site.register(Eleve, EleveAdmin)
 admin.site.register(Assistant, AssistantAdmin)
 admin.site.register(ChefEtablissement, ChefEtablissementAdmin)
