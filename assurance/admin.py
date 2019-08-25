@@ -17,7 +17,6 @@ class CourtierAdmin(admin.ModelAdmin):
         elif request.user.groups.filter(name='Courtier').exists():
             return ['user']
 
-
 admin.site.register(Assureur)
 admin.site.register(Courtier, CourtierAdmin)
 admin.site.register(ProduitAssurance)
