@@ -43,7 +43,7 @@ class Declaration(models.Model):
     information_supplementaire = models.TextField(max_length=500, blank=True, null=True)
     accepter = models.BooleanField(blank=True, null=True)
     status = models.CharField(max_length=5, choices=STATUS)
-    courtier = models.ForeignKey(Courtier, blank=True, null=True, related_name='courtier_client', on_delete=models.CASCADE)
+    courtier = models.ForeignKey(Courtier, related_name='courtier_client', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.titre

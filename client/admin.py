@@ -58,9 +58,10 @@ class DeclarationAdmin(admin.ModelAdmin):
             if obj.pk is None:
                 obj.client = request.user.client
                 obj.date = datetime.datetime.now()
+                obj.courtier = Souscription.objects.filter(
+                    client=request.user.client, produit_assurance=obj.produit_assurance).get().courtier
                 try:
-                    obj.courtier = Souscription.objects.filter(
-                        client=request.user.client, produit_assurance=obj.produit_assurance).get().courtier
+                    obj.courtier
                 except:
                     obj.courtier = Courtier.objects.all()[:1].get()
                 obj.status = '0'
