@@ -90,3 +90,12 @@ local_settings.py
 db.sqlite3
 !/static/
 /static/
+/ecole/migrations/
+client/migrations/0002_auto_20190825_2136.py
+client/migrations/0003_declaration_produit_assurance.py
+client/migrations/0004_auto_20190825_2208.py
+client/migrations/0005_auto_20190825_2249.py
+client/static/
+templates/
+/client/migrations/
+/assurance/migrations/

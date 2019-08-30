@@ -7,6 +7,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from import_export.formats import base_formats
 from django.db.models import Count
+from django.contrib import admin
 
 from ecole import views
 from ecole.models import *
@@ -45,7 +46,7 @@ class EleveAdmin(ImportExportModelAdmin):
         demande_souscription.eleves_count = demande_souscription.eleves.all().count()
         demande_souscription.save()
         return render(request=request,
-                      template_name="ecole/payment.html",
+                      template_name="ecole/paiement.html",
                       context={"object_list": queryset,
                                "count": count})
 
@@ -184,9 +185,9 @@ class DeclarationAdmin(admin.ModelAdmin):
                     'nature_blessure',
                     'information_supplementaire',
                     'courtier']
-        if obj:
-            if not obj.status == "0":
-                if request.user.groups.filter(name='Chef Etablissement').exists():
+        elif request.user.groups.filter(name='Chef Etablissement').exists():
+            if obj:
+                if not obj.status == "0":
                     return ["titre",
                             "eleve",
                             'date_incident',
@@ -195,8 +196,7 @@ class DeclarationAdmin(admin.ModelAdmin):
                             'nature_blessure',
                             'information_supplementaire',
                             'courtier']
-        else:
-            return []
+        return []
 
     def get_list_display(self, request):
         if request.user.groups.filter(name='Courtier').exists():
@@ -258,34 +258,34 @@ class DemandeSouscriptionAdmin(admin.ModelAdmin):
             return qs
 
     def actions_button(self, obj):
-        if not obj.payement_valider:
+        if not obj.paiement_valider:
             return format_html(
-                '<a class="button" href="{}">Valider payement</a>&nbsp;',
-                reverse('admin:valider_payment', args=[obj.pk]),
+                '<a class="button" href="{}">Valider paiement</a>&nbsp;',
+                reverse('admin:valider_paiement', args=[obj.pk]),
             )
 
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
-            url(r'^valider_payment/(?P<pk>.+)$', views.valider_payment, name='valider_payment'),
+            url(r'^valider_paiement/(?P<pk>.+)$', views.valider_paiement, name='valider_payment'),
         ]
         return custom_urls + urls
 
     def get_list_display(self, request):
         if request.user.groups.filter(name='Chef Etablissement').exists():
-            return ['courtier', 'eleves_count', 'payement_valider', 'actions_button']
+            return ['courtier', 'eleves_count', 'paiement_valider', 'actions_button']
         if request.user.groups.filter(name='Courtier').exists():
-            return ['chef_etablissement', 'eleves_count', 'payement_valider', 'actions_button']
+            return ['chef_etablissement', 'eleves_count', 'paiement_valider', 'actions_button']
         if request.user.is_superuser:
-            return ['chef_etablissement', 'courtier', 'eleves_count', 'payement_valider', 'actions_button']
+            return ['chef_etablissement', 'courtier', 'eleves_count', 'paiement_valider', 'actions_button']
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.groups.filter(name='Courtier').exists():
-            return ['chef_etablissement', 'eleves', 'eleves_count', 'payement_valider', 'actions_button']
+            return ['chef_etablissement', 'eleves', 'eleves_count', 'paiement_valider', 'actions_button']
         if request.user.groups.filter(name='Chef Etablissement').exists():
-            return ['courtier', 'eleves', 'eleves_count', 'payement_valider', 'actions_button']
+            return ['courtier', 'eleves', 'eleves_count', 'paiement_valider', 'actions_button']
         if request.user.is_superuser:
-            return ['chef_etablissement', 'courtier', 'eleves_count', 'payement_valider', 'actions_button']
+            return ['chef_etablissement', 'courtier', 'eleves_count', 'paiement_valider', 'actions_button']
 
     def get_exclude(self, request, obj=None):
         if request.user.groups.filter(name='Courtier').exists():

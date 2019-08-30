@@ -116,7 +116,7 @@ class DemandeSouscription(models.Model):
     eleves = models.ManyToManyField(Eleve, blank=True)
     courtier = models.ForeignKey(Courtier, blank=True, null=True, on_delete=models.CASCADE)
     eleves_count = models.IntegerField(blank=True, null=True)
-    payement_valider = models.BooleanField(blank=True, null=True)
+    paiement_valider = models.BooleanField(blank=True, null=True)
 
     def __str__(self):
         return self.chef_etablissement.prenom + " " + self.chef_etablissement.prenom + " pour " + str(self.eleves.count()) + " eleve(s)"

@@ -87,27 +87,26 @@ class DeclarationAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.groups.filter(name='Courtier').exists():
-            return ["titre",
-                    "produit_assurance",
+            return ['titre',
+                    'produit_assurance',
                     'date_incident',
                     'lieu_incident',
                     'circonstence_incident',
                     'nature_blessure',
                     'information_supplementaire',
                     'courtier']
-        if obj:
-            if not obj.status == "0":
-                if request.user.groups.filter(name='Chef Etablissement').exists():
-                    return ["titre",
-                            "produit_assurance",
+        elif request.user.groups.filter(name='Chef Etablissement').exists():
+            if obj:
+                if not obj.status == "0":
+                    return ['titre',
+                            'produit_assurance',
                             'date_incident',
                             'lieu_incident',
                             'circonstence_incident',
                             'nature_blessure',
                             'information_supplementaire',
                             'courtier']
-        else:
-            return []
+        return []
 
     def get_list_display(self, request):
         if request.user.groups.filter(name='Courtier').exists():
@@ -152,7 +151,7 @@ class OffreAdmin(admin.ModelAdmin):
         if obj.status is "4":
             return format_html(
                 '<a class="button" href="{}">Accepter Paiement</a>&nbsp;',
-                reverse('admin:accepter_payment', args=[obj.pk]),
+                reverse('admin:accepter_paiement', args=[obj.pk]),
             )
 
     def get_urls(self):
@@ -161,7 +160,7 @@ class OffreAdmin(admin.ModelAdmin):
             url(r'^accepter/(?P<pk>.+)$', views.accepter, name='accepter'),
             url(r'^refuser/(?P<pk>.+)$', views.refuser, name='refuser'),
             url(r'^payer/(?P<pk>.+)$', views.payer, name='payer'),
-            url(r'^accepter_payment/(?P<pk>.+)$', views.accepter_payment, name='accepter_payment'),
+            url(r'^accepter_paiement/(?P<pk>.+)$', views.accepter_paiement, name='accepter_payment'),
         ]
         return custom_urls + urls
 

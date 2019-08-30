@@ -68,11 +68,11 @@ def payer(request, pk):
     offre.status = '4'
     offre.save()
     return render(request=request,
-                  template_name='client/payment.html',
+                  template_name='client/paiement.html',
                   context={'offre': offre})
 
 
-def accepter_payment(request, pk):
+def accepter_paiement(request, pk):
     offre = Offre.objects.filter(pk=pk).get()
     offre.status = '5'
     offre.save()

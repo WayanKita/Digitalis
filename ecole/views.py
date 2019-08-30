@@ -27,13 +27,13 @@ def formulaire(request, pk):
 
 def eleve_liste_confirmation(request):
     return render(request=request,
-                  template_name="ecole/payment.html",
+                  template_name="ecole/paiement.html",
                   context={"eleves": Eleve.objects.all()})
 
 
-def valider_payment(request, pk):
+def valider_paiement(request, pk):
     requete = DemandeSouscription.objects.filter(pk=pk).get()
-    requete.payement_valider = True
+    requete.paiement_valider = True
     requete.save()
     for eleve in requete.eleves.all():
         eleve.assure = True
