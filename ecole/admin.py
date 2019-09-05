@@ -1,13 +1,14 @@
 from django.conf.urls import url
 from django.contrib import admin
 from django.db.models.functions import datetime
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from import_export.admin import ImportExportModelAdmin, ExportMixin
 from django.utils.html import format_html
 from django.urls import reverse
 from import_export.formats import base_formats
 from django.db.models import Count
 from django.contrib import admin
+from django.contrib import messages
 
 from ecole import views
 from ecole.models import *
@@ -26,6 +27,15 @@ class EleveAdmin(ImportExportModelAdmin):
             return []
 
     def assurer(self, request, queryset):
+        list_eleve = Eleve.objects.none()
+        for eleve in queryset:
+            if Souscription.objects.filter(eleve=eleve):
+                list_eleve |= Souscription.objects.filter(eleve=eleve)
+        if list_eleve:
+            messages.error(request, "%s eleve(s) deja assure(s) ou en cours d'assurance" % list_eleve.count())
+            return redirect('/admin/ecole/eleve/')
+                # self.message_user(request, "%s successfully marked as published." % message_bit)
+        print('moved on')
         count = queryset.count()
         count = count*1000
         produit_rc_scolaire = ProduitAssurance.objects.filter(titre='RC Scolaire').get()
@@ -34,7 +44,6 @@ class EleveAdmin(ImportExportModelAdmin):
                                                                   courtier=courtier)
         demande_souscription.save()
         for eleve in queryset:
-            print(eleve.nom)
             Souscription.objects.create(produit_assurance=produit_rc_scolaire,
                                         status='2',
                                         courtier=courtier,
@@ -267,7 +276,7 @@ class DemandeSouscriptionAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
-            url(r'^valider_paiement/(?P<pk>.+)$', views.valider_paiement, name='valider_payment'),
+            url(r'^valider_paiement/(?P<pk>.+)$', views.valider_paiement, name='valider_paiement'),
         ]
         return custom_urls + urls
 
