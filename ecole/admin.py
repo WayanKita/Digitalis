@@ -34,8 +34,6 @@ class EleveAdmin(ImportExportModelAdmin):
         if list_eleve:
             messages.error(request, "%s eleve(s) deja assure(s) ou en cours d'assurance" % list_eleve.count())
             return redirect('/admin/ecole/eleve/')
-                # self.message_user(request, "%s successfully marked as published." % message_bit)
-        print('moved on')
         count = queryset.count()
         count = count*1000
         produit_rc_scolaire = ProduitAssurance.objects.filter(titre='RC Scolaire').get()
@@ -57,7 +55,8 @@ class EleveAdmin(ImportExportModelAdmin):
         return render(request=request,
                       template_name="ecole/paiement.html",
                       context={"object_list": queryset,
-                               "count": count})
+                               "count": count,
+                               "demande_souscription": demande_souscription})
 
     def save_model(self, request, obj, form, change):
         if request.user.groups.filter(name='Chef Etablissement').exists():

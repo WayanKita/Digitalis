@@ -1,4 +1,6 @@
 from datetime import timedelta, datetime
+
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -42,6 +44,15 @@ def valider_paiement(request, pk):
         souscription.date_expiration = datetime.now() + timedelta(days=365)
         souscription.save()
     return redirect('/admin/ecole/demandesouscription')
+
+
+def annuler_demande(request, pk):
+    demande_souscription = DemandeSouscription.objects.filter(pk=pk).get()
+    for eleve in demande_souscription.eleves.all():
+        Souscription.objects.filter(eleve=eleve).delete()
+    DemandeSouscription.objects.filter(pk=pk).delete()
+    messages.success(request, "Votre demande a ete annuler")
+    return redirect('/admin/ecole/eleve')
 
 
 def render_pdf(request, pk):

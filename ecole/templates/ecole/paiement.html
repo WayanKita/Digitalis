@@ -46,7 +46,10 @@
     <th>Aucun eleve selectione.</th>
 {% endfor %}
 </table>
-<p align="center"><i>Veuillez verifier les informations fournisent avant d'effectuer votre paiment</i></p>
+<p align="center"><i style="color: grey; font-size: 8px">Veuillez verifier les informations fournisent avant d'effectuer votre paiment</i></p>
+<div align="center" style="margin-bottom: 20px">
+    <a class="button" href="/ecole/eleve/annuler_demande/{{ demande_souscription.pk }}">Annuler la demande</a>
+</div>
 
 <div style="width: 80%;
 margin: auto;
@@ -68,8 +71,8 @@ padding-bottom: 20px;">
         <p style="font-size: 13px">Versez le montant de {{ count }} CFA au +241 06 22 35 75</p>
     </div>
 </div>
-<div >
-    <p align="center"><i  style="color: red" >Les élèves ne seront qu'assuré apres la reception du paiement</i></p>
+<div>
+    <p align="center"><i  style="color: red; font-size: 8px" >Les élèves ne seront qu'assuré apres la reception du paiement!</i></p>
 </div>
 
 
