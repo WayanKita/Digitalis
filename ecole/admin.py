@@ -316,9 +316,9 @@ class SouscriptionAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='Courtier').exists():
             return ['produit_assurance', 'eleve', 'chef_etablissement', 'date_expiration']
         elif request.user.groups.filter(name='Chef Etablissement').exists():
-            return ['produit_assurance', 'eleve', 'courtier', 'date_expiration']
+            return ['produit_assurance', 'eleve', 'get_classe', 'courtier', 'date_expiration']
         else:
-            return ['produit_assurance', 'eleve', 'chef_etablissement', 'courtier', 'date_expiration']
+            return ['produit_assurance', 'eleve', 'get_classe', 'chef_etablissement', 'courtier', 'date_expiration']
 
     def get_list_filter(self, request):
         if request.user.groups.filter(name='Courtier').exists():
@@ -327,6 +327,13 @@ class SouscriptionAdmin(admin.ModelAdmin):
             return ['produit_assurance', 'courtier', 'date_expiration']
         else:
             return ['produit_assurance', 'chef_etablissement', 'courtier', 'date_expiration']
+
+    def get_classe(self, obj):
+        return obj.eleve.classe
+
+    get_classe.short_description = 'Classe'
+    get_classe.admin_order_field = 'eleve__classe'
+
 
 admin.site.site_header = "OnDigitalise"
 admin.site.register(Eleve, EleveAdmin)

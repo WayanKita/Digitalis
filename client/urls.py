@@ -6,6 +6,8 @@ from . import views
 
 from django.contrib import admin
 
+
+
 urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(template_name='client/login.html')),
     url(r'^logout/$', auth_views.LogoutView.as_view()),
