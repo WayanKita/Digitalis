@@ -143,10 +143,16 @@ class ChefEtablissementAdmin(admin.ModelAdmin):
 
 class DeclarationAdmin(admin.ModelAdmin):
     def actions_button_chef_etablissement(self, obj):
-        return format_html(
-            '<a class="button" href="{}">Voire</a>&nbsp;',
-            reverse('admin:voire_demande', args=[obj.pk]),
-        )
+        if obj.status is '4':
+            return format_html(
+                '<a class="button" href="{}">Envoyer</a>&nbsp;',
+                reverse('admin:envoyer', args=[obj.pk]),
+            )
+        else:
+            return format_html(
+                '<a class="button" href="{}">Voire</a>&nbsp;',
+                reverse('admin:voire_demande', args=[obj.pk]),
+            )
 
     def actions_button_courtier(self, obj):
         if obj.status is '1':
@@ -166,6 +172,7 @@ class DeclarationAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             url(r'^formulaire/(?P<pk>.+)$', views.formulaire, name='voire_demande'),
+            url(r'^envoyer/(?P<pk>.+)$', views.envoyer, name='envoyer'),
             url(r'^traite/(?P<pk>.+)$', views.traiter_demande, name='traiter_demande'),
             url(r'^accepter/(?P<pk>.+)$', views.accepter_demande_client, name='accepter_demande_client'),
             url(r'^refuser/(?P<pk>.+)$', views.refuser_demande_client, name='refuser_demande_client'),
@@ -178,7 +185,7 @@ class DeclarationAdmin(admin.ModelAdmin):
                 obj.user = request.user
                 obj.date = datetime.datetime.now()
                 obj.courtier = Etablissement.objects.filter(chef_etablissement=request.user.chefetablissement).get().courtier
-                obj.status = '0'
+                obj.status = '4'
             super().save_model(request, obj, form, change)
         else:
             super().save_model(request, obj, form, change)
@@ -211,7 +218,7 @@ class DeclarationAdmin(admin.ModelAdmin):
                     'courtier']
         elif request.user.groups.filter(name='Chef Etablissement').exists():
             if obj:
-                if not obj.status == "0":
+                if not obj.status == "4":
                     return ["titre",
                             "eleve",
                             'date_incident',

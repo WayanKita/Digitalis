@@ -77,6 +77,13 @@ def accepter_demande_client(request, pk):
     return redirect('/admin/ecole/declaration')
 
 
+def envoyer(request, pk):
+    demande = Declaration.objects.filter(pk=pk).get()
+    demande.status = '0'
+    demande.save()
+    return redirect('/admin/ecole/declaration')
+
+
 def refuser_demande_client(request, pk):
     demande = Declaration.objects.filter(pk=pk).get()
     demande.status = '3'

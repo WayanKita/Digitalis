@@ -50,6 +50,7 @@ class Declaration(models.Model):
         ('2', 'Deces'),
     )
     STATUS = (
+        ('4', 'Brouillon'),
         ('0', 'Envoyer'),
         ('1', 'Reçu'),
         ('2', 'En cours de traitement'),
