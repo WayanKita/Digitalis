@@ -228,8 +228,8 @@ class DeclarationAdmin(admin.ModelAdmin):
         elif request.user.groups.filter(name='Chef Etablissement').exists():
             return ['titre', 'eleve', 'get_classe', 'status', 'courtier', 'accepter', 'actions_button_chef_etablissement', 'date']
         else:
-            return ['titre', 'eleve', 'get_classe', 'status', 'courtier', 'accepter', 'date', 'date_resolution']
-            # return ['titre', 'eleve', 'get_classe', 'status', 'courtier', 'accepter', 'date']
+            # return ['titre', 'eleve', 'get_classe', 'status', 'courtier', 'accepter', 'date', 'date_resolution']
+            return ['titre', 'eleve', 'get_classe', 'status', 'courtier', 'accepter', 'date']
 
     def get_exclude(self, request, obj=None):
         if request.user.groups.filter(name='Chef Etablissement').exists():
