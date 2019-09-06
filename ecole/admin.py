@@ -144,10 +144,8 @@ class ChefEtablissementAdmin(admin.ModelAdmin):
 class DeclarationAdmin(admin.ModelAdmin):
     def actions_button_chef_etablissement(self, obj):
         return format_html(
-            '<a class="button" href="{}">Voire</a>&nbsp;'
-            '<a class="button" href="{}">Telecharger</a>',
-            reverse('admin:voire', args=[obj.pk]),
-            reverse('admin:telecharger', args=[obj.pk]),
+            '<a class="button" href="{}">Voire</a>&nbsp;',
+            reverse('admin:voire_demande', args=[obj.pk]),
         )
 
     def actions_button_courtier(self, obj):
@@ -167,8 +165,7 @@ class DeclarationAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
-            url(r'^formulaire/(?P<pk>.+)$', views.formulaire, name='voire'),
-            url(r'^formulaire_telecharger/(?P<pk>.+)$', views.render_pdf, name='telecharger'),
+            url(r'^formulaire/(?P<pk>.+)$', views.formulaire, name='voire_demande'),
             url(r'^traite/(?P<pk>.+)$', views.traiter_demande, name='traiter_demande'),
             url(r'^accepter/(?P<pk>.+)$', views.accepter_demande_client, name='accepter_demande_client'),
             url(r'^refuser/(?P<pk>.+)$', views.refuser_demande_client, name='refuser_demande_client'),

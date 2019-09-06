@@ -56,7 +56,7 @@ class Declaration(models.Model):
         ('3', 'Résolue'),
     )
     titre = models.CharField(max_length=100)
-    eleve = models.ForeignKey(Eleve, on_delete=models.CASCADE)
+    eleve = models.ForeignKey(Eleve, on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField(blank=True, null=True)
     date_incident = models.DateField()
     date_de_resolution = models.DateField(blank=True, null=True)

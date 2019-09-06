@@ -22,10 +22,8 @@ class ClientAdmin(admin.ModelAdmin):
 class DeclarationAdmin(admin.ModelAdmin):
     def actions_button_client(self, obj):
         return format_html(
-            '<a class="button" href="{}">Voire</a>&nbsp;'
-            '<a class="button" href="{}">Telecharger</a>',
+            '<a class="button" href="{}">Voire</a>&nbsp;',
             reverse('admin:voire', args=[obj.pk]),
-            reverse('admin:telecharger', args=[obj.pk]),
         )
 
     def actions_button_courtier(self, obj):
@@ -46,7 +44,6 @@ class DeclarationAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             url(r'^formulaire/(?P<pk>.+)$', views.formulaire, name='voire'),
-            url(r'^formulaire_telecharger/(?P<pk>.+)$', views.render_pdf, name='telecharger'),
             url(r'^traite/(?P<pk>.+)$', views.traite, name='traite'),
             url(r'^accepter/(?P<pk>.+)$', views.accepter_demande, name='accepter_demande'),
             url(r'^refuser/(?P<pk>.+)$', views.refuser_demande, name='refuser_demande'),

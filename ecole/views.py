@@ -7,7 +7,7 @@ from django.template.loader import get_template
 from django.urls import reverse
 from django.views.generic import CreateView, ListView, View
 from ecole.models import *
-from ecole.utils import render_to_pdf
+# from ecole.utils import render_to_pdf
 
 
 def index(request):
@@ -55,17 +55,17 @@ def annuler_demande(request, pk):
     return redirect('/admin/ecole/eleve')
 
 
-def render_pdf(request, pk):
-    context = {"declaration": Declaration.objects.filter(pk=pk).get(),
-               "ecole": Etablissement.objects.all()[:1].get()}
-    pdf = render_to_pdf('ecole/declaration_telecharger.html', context)
-    if pdf:
-        response = HttpResponse(pdf, content_type='application/pdf')
-        filename = "Declaration_%s.pdf" % Declaration.objects.filter(pk=pk).get().titre
-        content = "attachement; filename=%s" % filename
-        response['Content-Disposition'] = content
-        return response
-    return HttpResponse("Not Found")
+# def render_pdf(request, pk):
+#     context = {"declaration": Declaration.objects.filter(pk=pk).get(),
+#                "ecole": Etablissement.objects.all()[:1].get()}
+#     pdf = render_to_pdf('ecole/declaration_telecharger.html', context)
+#     if pdf:
+#         response = HttpResponse(pdf, content_type='application/pdf')
+#         filename = "Declaration_%s.pdf" % Declaration.objects.filter(pk=pk).get().titre
+#         content = "attachement; filename=%s" % filename
+#         response['Content-Disposition'] = content
+#         return response
+#     return HttpResponse("Not Found")
 
 
 def accepter_demande_client(request, pk):
