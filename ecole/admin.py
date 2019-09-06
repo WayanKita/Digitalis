@@ -10,7 +10,6 @@ from django.contrib import messages
 from tablib import Dataset
 
 from ecole import views
-from ecole.forms import CustomImportForm
 from ecole.models import *
 from ecole.resources import EleveResource
 
