@@ -25,8 +25,8 @@ class Eleve(models.Model):
     classe = models.CharField(max_length=100)
     date_de_naissance = models.DateField()
     date_ajout = models.DateField(blank=True, null=True)
-    assure = models.BooleanField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    assure = models.BooleanField(null=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.prenom + " " + self.nom
@@ -59,6 +59,7 @@ class Declaration(models.Model):
     eleve = models.ForeignKey(Eleve, on_delete=models.CASCADE)
     date = models.DateField(blank=True, null=True)
     date_incident = models.DateField()
+    date_de_resolution = models.DateField(blank=True, null=True)
     lieu_incident = models.TextField()
     circonstence_incident = models.TextField()
     nature_blessure = models.CharField(max_length=5, choices=BLESSURES)

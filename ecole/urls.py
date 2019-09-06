@@ -2,7 +2,12 @@ from django.conf.urls import url
 from django.urls import path
 
 # from ecole.views import EleveListView
+from django.contrib import admin
 from . import views
+
+admin.site_header = "OnDigitalise"
+admin.index_title = ''
+admin.site_title = 'OnDigitalise'
 
 urlpatterns = [
     path('index/', views.index, name='index'),

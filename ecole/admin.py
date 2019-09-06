@@ -1,17 +1,18 @@
 from django.conf.urls import url
-from django.contrib import admin
 from django.db.models.functions import datetime
 from django.shortcuts import render, redirect
-from import_export.admin import ImportExportModelAdmin, ExportMixin
+from import_export.admin import ImportExportModelAdmin
 from django.utils.html import format_html
 from django.urls import reverse
 from import_export.formats import base_formats
-from django.db.models import Count
 from django.contrib import admin
 from django.contrib import messages
+from tablib import Dataset
 
 from ecole import views
+from ecole.forms import CustomImportForm
 from ecole.models import *
+from ecole.resources import EleveResource
 
 MAX_OBJECTS = 1
 
@@ -59,12 +60,30 @@ class EleveAdmin(ImportExportModelAdmin):
                                "demande_souscription": demande_souscription})
 
     def save_model(self, request, obj, form, change):
+        print('triggered')
         if request.user.groups.filter(name='Chef Etablissement').exists():
             if obj.pk is None:
                 obj.user = request.user
                 obj.assure = False
                 obj.date_ajout = datetime.datetime.now()
         super().save_model(request, obj, form, change)
+
+    using_resource = None
+
+    def post(self, request):
+        resource = self.using_resource
+        dataset = Dataset()
+        new_data = request.FILES['importfile']
+
+        imported_data = dataset.load(new_data.read())
+        result = resource.import_data(dataset, dry_run=True, current_user=request.user, raise_errors=True)
+        if not result.has_errors():
+            resource.import_data(dataset, dry_run=False, current_user=request.user)
+            # Don't forget to pass request user on the real import like I did !
+            messages.success(request, 'Import de données réussi !')
+        else:
+            messages.error(request, "Erreur lors de l'import des données.")
+        return redirect('/admin/ecole/eleve')
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -95,6 +114,7 @@ class EleveAdmin(ImportExportModelAdmin):
         'date_de_naissance',
         'assure')
 
+    resource_class = EleveResource
     readonly_fields = ["assure"]
     list_filter = ['assure']
     assurer.short_description = 'Assure les eleves selectiones'
@@ -135,14 +155,14 @@ class DeclarationAdmin(admin.ModelAdmin):
         if obj.status is '1':
             return format_html(
                 '<a class="button" href="{}">Traite la demande</a>&nbsp;',
-                reverse('admin:traite', args=[obj.pk]),
+                reverse('admin:traiter_demande', args=[obj.pk]),
             )
         if obj.status is '2':
             return format_html(
                 '<a class="button" href="{}">Accepter</a>&nbsp;'
                 '<a class="button" href="{}">Refuser</a>',
-                reverse('admin:accepter_demande', args=[obj.pk]),
-                reverse('admin:refuser_demande', args=[obj.pk]),
+                reverse('admin:accepter_demande_client', args=[obj.pk]),
+                reverse('admin:refuser_demande_client', args=[obj.pk]),
             )
 
     def get_urls(self):
@@ -150,9 +170,9 @@ class DeclarationAdmin(admin.ModelAdmin):
         custom_urls = [
             url(r'^formulaire/(?P<pk>.+)$', views.formulaire, name='voire'),
             url(r'^formulaire_telecharger/(?P<pk>.+)$', views.render_pdf, name='telecharger'),
-            url(r'^traite/(?P<pk>.+)$', views.traite, name='traite'),
-            url(r'^accepter/(?P<pk>.+)$', views.accepter_demande, name='accepter_demande'),
-            url(r'^refuser/(?P<pk>.+)$', views.refuser_demande, name='refuser_demande'),
+            url(r'^traite/(?P<pk>.+)$', views.traiter_demande, name='traiter_demande'),
+            url(r'^accepter/(?P<pk>.+)$', views.accepter_demande_client, name='accepter_demande_client'),
+            url(r'^refuser/(?P<pk>.+)$', views.refuser_demande_client, name='refuser_demande_client'),
         ]
         return custom_urls + urls
 
@@ -208,11 +228,11 @@ class DeclarationAdmin(admin.ModelAdmin):
 
     def get_list_display(self, request):
         if request.user.groups.filter(name='Courtier').exists():
-            return ['titre', 'eleve', 'status', 'accepter', 'actions_button_courtier']
+            return ['titre', 'eleve', 'get_classe', 'status', 'accepter', 'actions_button_courtier', 'date']
         elif request.user.groups.filter(name='Chef Etablissement').exists():
-            return ['titre', 'eleve', 'status', 'accepter', 'actions_button_chef_etablissement']
+            return ['titre', 'eleve', 'get_classe', 'status', 'courtier', 'accepter', 'actions_button_chef_etablissement', 'date']
         else:
-            return ['titre', 'eleve', 'status', 'accepter']
+            return ['titre', 'eleve', 'get_classe', 'status', 'courtier', 'accepter', 'date', 'date_resolution']
 
     def get_exclude(self, request, obj=None):
         if request.user.groups.filter(name='Chef Etablissement').exists():
@@ -221,6 +241,12 @@ class DeclarationAdmin(admin.ModelAdmin):
             return ['user', 'date', 'courtier']
         else:
             return []
+
+    def get_classe(self, obj):
+        return obj.eleve.classe
+
+    get_classe.short_description = 'Classe'
+    get_classe.admin_order_field = 'eleve__classe'
 
     actions_button_chef_etablissement.short_description = 'Actions'
     actions_button_chef_etablissement.allow_tags = True
@@ -343,7 +369,6 @@ class SouscriptionAdmin(admin.ModelAdmin):
     get_classe.admin_order_field = 'eleve__classe'
 
 
-admin.site.site_header = "OnDigitalise"
 admin.site.register(Eleve, EleveAdmin)
 admin.site.register(Assistant, AssistantAdmin)
 admin.site.register(ChefEtablissement, ChefEtablissementAdmin)

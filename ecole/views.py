@@ -68,15 +68,16 @@ def render_pdf(request, pk):
     return HttpResponse("Not Found")
 
 
-def accepter_demande(request, pk):
+def accepter_demande_client(request, pk):
     demande = Declaration.objects.filter(pk=pk).get()
     demande.status = '3'
     demande.accepter = True
+    demande.date_de_resolution = datetime.now()
     demande.save()
     return redirect('/admin/ecole/declaration')
 
 
-def refuser_demande(request, pk):
+def refuser_demande_client(request, pk):
     demande = Declaration.objects.filter(pk=pk).get()
     demande.status = '3'
     demande.accepter = False
@@ -84,7 +85,7 @@ def refuser_demande(request, pk):
     return redirect('/admin/ecole/declaration')
 
 
-def traite(request, pk):
+def traiter_demande(request, pk):
     demande = Declaration.objects.filter(pk=pk).get()
     demande.status = '2'
     demande.save()
