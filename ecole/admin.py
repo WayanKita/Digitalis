@@ -240,7 +240,7 @@ class DeclarationAdmin(admin.ModelAdmin):
 
     def get_exclude(self, request, obj=None):
         if request.user.groups.filter(name='Chef Etablissement').exists():
-            return ['user', 'date', 'courtier', 'accepter', 'status']
+            return ['user', 'date', 'courtier', 'date_de_resolution', 'accepter', 'status']
         if request.user.groups.filter(name='Courtier').exists():
             return ['user', 'date', 'courtier']
         else:
