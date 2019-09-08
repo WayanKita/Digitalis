@@ -362,7 +362,7 @@ class SouscriptionAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='Courtier').exists():
             return ['produit_assurance', 'chef_etablissement', 'date_expiration']
         elif request.user.groups.filter(name='Chef Etablissement').exists():
-            return ['produit_assurance', 'courtier', 'date_expiration']
+            return ['courtier', 'date_expiration']
         else:
             return ['produit_assurance', 'chef_etablissement', 'courtier', 'date_expiration']
 
