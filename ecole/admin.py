@@ -8,6 +8,7 @@ from import_export.formats import base_formats
 from django.contrib import admin
 from django.contrib import messages
 from tablib import Dataset
+from import_export.results import RowResult
 
 from ecole import views
 from ecole.models import *
@@ -94,10 +95,27 @@ class EleveAdmin(ImportExportModelAdmin):
         """
         Returns available export formats.
         """
-        formats = (
-              base_formats.XLSX,
-        )
-        return [f for f in formats if f().can_export()]
+        return [base_formats.XLSX]
+
+    def get_import_formats(self):
+        """
+        Returns available export formats.
+        """
+        return [base_formats.XLSX]
+
+    def import_row(self, row, instance_loader, **kwargs):
+        # overriding import_row to ignore errors and skip rows that fail to import
+        # without failing the entire import
+        import_result = super(EleveAdmin, self).import_row(row, instance_loader, **kwargs)
+        if import_result.import_type == RowResult.IMPORT_TYPE_ERROR:
+            # Copy the values to display in the preview report
+            import_result.diff = [row[val] for val in row]
+            # Add a column with the error message
+            import_result.diff.append('Errors: {}'.format([err.error for err in import_result.errors]))
+            # clear errors and mark the record to skip
+            import_result.errors = []
+            import_result.import_type = RowResult.IMPORT_TYPE_SKIP
+        return import_result
 
     def get_exclude(self, request, obj=None):
         if request.user.groups.filter(name='Chef Etablissement').exists():
