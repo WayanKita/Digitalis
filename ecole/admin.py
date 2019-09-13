@@ -36,7 +36,7 @@ class EleveAdmin(ImportExportModelAdmin):
             messages.error(request, "%s eleve(s) deja assure(s) ou en cours d'assurance" % list_eleve.count())
             return redirect('/admin/ecole/eleve/')
         count = queryset.count()
-        count = count*1000
+        count = count*ProduitAssurance.objects.filter(titre='RC Scolaire').get().prix
         produit_rc_scolaire = ProduitAssurance.objects.filter(titre='RC Scolaire').get()
         courtier = Etablissement.objects.filter(chef_etablissement=request.user.chefetablissement).get().courtier
         demande_souscription = DemandeSouscription.objects.create(chef_etablissement=request.user.chefetablissement,
