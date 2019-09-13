@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^declaration/formulaire/$', views.formulaire, name='formulaire'),
     url(r'^eleve/paiement_confirmation/$', views.eleve_liste_confirmation, name='eleve-list'),
     url(r'^eleve/annuler_demande/(?P<pk>.+)$', views.annuler_demande, name='annuler_demande'),
+    url(r'^eleve/download/(?P<path>.*)$', views.download, name='download'),
 ]

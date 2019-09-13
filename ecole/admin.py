@@ -123,6 +123,12 @@ class EleveAdmin(ImportExportModelAdmin):
         else:
             return []
 
+    def changelist_view(self, request, **kwargs):
+        """Adds the 'Telecharger Model d'Import' button in Eleve list view"""
+        if request.user.groups.filter(name='Chef Etablissement').exists():
+            self.change_list_template = 'ecole/change_list_ecole.html'
+        return super(EleveAdmin, self).changelist_view(request)
+
     actions = ['assurer']
     list_display = (
         'prenom',
